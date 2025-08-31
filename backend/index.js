@@ -30,7 +30,7 @@ if(process.env.NODE_ENV === 'development'){
 }
 app.use(limiter);
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 
 
@@ -39,12 +39,18 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 
 // Middleware to handle routes
-app.use('/users', userRoute);
-app.use('/auth', authRoute);
-app.use('/admin', adminRoute);
-app.use('/upload', uploadRoute);
-app.use('/tasks', tasksRoute)
+app.use('/api/users', userRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/admin', adminRoute);
+app.use('/api/upload', uploadRoute);
+app.use('/api/tasks', tasksRoute)
 
+
+app.use('/api/home', (req, res, next) => {
+    res.status(200).json({
+        message: "Server is working...😇"
+    })
+})
 // Last route to handle 404 - Not Found
 app.use(notFound);
 
