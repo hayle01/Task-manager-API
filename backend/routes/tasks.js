@@ -20,8 +20,8 @@ const router = express.Router();
  *              description: List of tasks
  *  
  */
-router.get('/my-tasks', protect, getMyTasks);
-router.post('/create', protect, validateZod(taskValidationSchema), createTask);
+router.get('/my-tasks', getMyTasks);
+router.post('/', validateZod(taskValidationSchema), createTask);
 router.put('/:id', protect, updateTask);
 router.delete('/:id', protect, deleteTask);
 

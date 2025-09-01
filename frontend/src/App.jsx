@@ -1,9 +1,10 @@
   import { useQuery } from "@tanstack/react-query"
+import { AddTasks } from "./AddTasks"
 
   function App() {
     const { data, isLoading, error} = useQuery({
-      queryKey: ['users'],
-      queryFn: () => fetch('http://localhost:3000/api/users').then(res => res.json())
+      queryKey: ['tasks'],
+      queryFn: () => fetch('http://localhost:3000/api/tasks/my-tasks').then(res => res.json())
     })
 
     if(isLoading) return <h1>Loading....</h1>
@@ -12,7 +13,8 @@
 
     return (
       <>
-        {data?.map((user, index) => <h1 key={index}>{user.name}</h1>)}
+        <AddTasks />
+        {data?.map((task, index) => <h1 key={index}>{task.title}</h1>)}
       </>
     )
   }

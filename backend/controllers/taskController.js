@@ -9,7 +9,7 @@ export const createTask = async (req, res, next) => {
             description,
             status: status || 'pending',
             dueDate,
-            createdBy: req.user._id 
+            createdBy: '68ab65acc9e4793c29389cf8' // req.user._id 
         }
         const saved = await Task.create({...task});
         //const saveTask = await Task.create({...req.body, createdBy: req.user._id});
@@ -22,7 +22,8 @@ export const createTask = async (req, res, next) => {
 // get my tasks
 export const getMyTasks = async (req, res, next) => {
     try {
-        const tasks = await Task.find({createdBy: req.user._id});
+        // const tasks = await Task.find({createdBy: req.user._id});
+        const tasks = await Task.find({}).sort({createdAt: -1});
         return res.status(200).json(tasks);
     } catch (error) {
         next(error)
