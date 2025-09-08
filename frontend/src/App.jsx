@@ -1,21 +1,13 @@
-  import { useQuery } from "@tanstack/react-query"
-import { AddTasks } from "./AddTasks"
-
+import {Routes, Route} from 'react-router'
+import {LoginPage} from './pages/auth/LoginPage';
+import {RegisterPage} from './pages/auth/RegisterPage';
   function App() {
-    const { data, isLoading, error} = useQuery({
-      queryKey: ['tasks'],
-      queryFn: () => fetch('http://localhost:3000/api/tasks/my-tasks').then(res => res.json())
-    })
-
-    if(isLoading) return <h1>Loading....</h1>
-
-    if(error) return <h1>Error....</h1>
 
     return (
-      <>
-        <AddTasks />
-        {data?.map((task, index) => <h1 key={index}>{task.title}</h1>)}
-      </>
+      <Routes>
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+      </Routes>
     )
   }
 
