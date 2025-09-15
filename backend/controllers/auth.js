@@ -31,13 +31,14 @@ export const login = async (req, res, next) => {
         email = email.toLowerCase();
         console.log(email, password);
         const user = await User.findOne({ email });
-        if(!user || !(user.comparePassword(password))) {
+        if(!user || !(await user.comparePassword(password))) {
             return res.status(401).json({ message: 'Invalid email or password'});
         }
         console.log('User logged in:', user);
+
         // generate token
         const token = generateToken(user._id);
-        res.status(200).json({ token })
+        res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email } })
     } catch (error) {
         next(error)
     }
