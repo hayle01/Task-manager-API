@@ -3,7 +3,7 @@ import { generateToken } from "../utils/generateToken.js";
 
 // Register new user
 export const registerUser = async (req, res, next) => {
-    let { name, email, password, role, profile} = req.body;
+    let { name, email, password, role} = req.body;
     try {
         email = email.toLowerCase();
         const exists = await User.findOne( { email});
@@ -12,14 +12,13 @@ export const registerUser = async (req, res, next) => {
             name,
             email,
             password,
-            role,
-            profile
+            role
         });
         console.log('User registered:', user);
 
         // generate token
         const token = generateToken(user._id);
-        res.status(201).json({ token })
+        res.status(201).json({ token, user})
     } catch (error) {
         next(error)
     }

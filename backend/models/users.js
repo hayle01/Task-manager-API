@@ -9,8 +9,7 @@
             type: String,
             enum: ['user', 'admin'],
             default: 'user'
-        },
-        profile: String
+        }
     })
 
     // hash password before saving to db
