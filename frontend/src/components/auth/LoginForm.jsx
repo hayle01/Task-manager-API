@@ -14,16 +14,19 @@ import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import api from "../../lib/api/ApiClient";
 import { extractErrorMessages } from "../../util/errorUtils";
+import useAuthStore from "../../lib/Store/authStore";
 export const LoginForm = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState(null);
+
+  const { setAuth } = useAuthStore();
 
   const LoginMutation = useMutation({
     mutationFn: async (credential) => {
@@ -32,8 +35,12 @@ export const LoginForm = () => {
     },
     onSuccess: (data) => {
       //TODO: handle tokens
-
-      // navigate('/dashboard')
+      if(data.token){
+        const user = data.user;
+        const token = data.token;
+        setAuth(user, token);
+        navigate('/dashboard')
+      }
       console.log("Credential data:", data);
     },
     onError: (error) => {
@@ -52,7 +59,7 @@ export const LoginForm = () => {
     }
     LoginMutation.mutate({
       email: formValues.email,
-      password: formValues.password,
+      password: formValues.password
     });
     setError(false);
     setIsLoading(false)

@@ -33,6 +33,10 @@ const router = express.Router();
  */
 router.post('/register', validateZod(createUserSchema), registerUser);
 router.post('/login', login);
+router.get('/me', protect, (req, res) => {
+    console.log("req.user", req.user)
+    res.json(req.user)
+})
 
 // protecred routes
 router.get('/profile', protect, (req, res) => {

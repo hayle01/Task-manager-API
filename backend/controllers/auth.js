@@ -38,7 +38,7 @@ export const login = async (req, res, next) => {
 
         // generate token
         const token = generateToken(user._id);
-        res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email } })
+        res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } })
     } catch (error) {
         next(error)
     }
