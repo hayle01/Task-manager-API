@@ -11,11 +11,7 @@ export const ProtectedRoute = ({ children }) => {
   const { data, error, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["currentUser"],
     queryFn: async () => {
-      const response = await api.get("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/auth/me");
       console.log("Response data:", response.data);
       return response.data;
     },
