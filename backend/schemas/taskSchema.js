@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const taskValidationSchema = z.object({
-    title: z.string().min(1, 'Title is requires'),
+    title: z.string().min(1, 'Title is required'),
     description: z.string().optional(),
     status: z.enum(['pending', 'in-progress', 'completed']).optional().default('pending'),
     dueDate: z.string().optional()
