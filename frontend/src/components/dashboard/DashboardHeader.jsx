@@ -15,7 +15,7 @@ export const DashboardHeader = () => {
     }
   }
   return (
-    <header className='bg-card border-b border-border shadow-sm'>
+    <header className='max-w-7xl mx-auto bg-card border-b border-border shadow-sm'>
         <div className='w-full px-4 py-4 flex items-center justify-between'>
           {/* Right: LOGO */}
           <div className='flex items-center gap-3'>

@@ -87,7 +87,7 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
         title: formValues.title.trim(),
         description: formValues.description.trim(),
         status: formValues.status,
-        dueDate: formValues.dueDate ? new Date(formValues.dueDate).toISOString : null
+        dueDate: formValues.dueDate ? new Date(formValues.dueDate).toISOString() : null
     }
     createTaskMutation.mutate(taskData);
     setvalidationError(null)

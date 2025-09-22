@@ -56,7 +56,7 @@ export const DashboardPage = () => {
     {/* Header */}
     <DashboardHeader />
     {/* Main content */}
-    <main className='space-y-6'>
+    <main className='max-w-7xl mx-auto px-4 py-8 space-y-6'>
     {/* Welcome section */}
     <DashboardWelcome
       showCreateForm={showCreateForm}
