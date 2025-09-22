@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from '../../lib/api/ApiClient'
 import useAuthStore from "../../lib/Store/authStore";
 const TASK_STATUSES = [
@@ -27,7 +27,6 @@ const TASK_STATUSES = [
   { value: "completed", label: "Completed" },
 ];
 export const TaskForm = ({ open = true, onOpenChange }) => {
-    const { token } = useAuthStore();
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -35,7 +34,6 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
     dueDate: "",
   });
   const [validationError, setvalidationError] = useState(null);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,12 +60,15 @@ export const TaskForm = ({ open = true, onOpenChange }) => {
     onOpenChange?.(false);
   }
 
+  const queryClient = useQueryClient();
+
   const createTaskMutation = useMutation({
     mutationFn: async (taskData) => {
         const response = await api.post('/tasks', taskData)
         return response.data;
     },
     onSuccess: (data) => {
+        queryClient.invalidateQueries({queryKey: ['tasks']})
         console.log('Task created successfuly: ', data)
     },
     onError: (error) => {

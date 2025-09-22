@@ -22,9 +22,8 @@ export const DashboardWelcome = ({onCreateTask, showCreateForm}) => {
           <Button onClick={onCreateTask}>Create New Task</Button>
         </div>
       </CardHeader>
-      <CardContent className="p-6">
-        {/* Card status */}
-        </CardContent>
+      {/* <CardContent className="p-6">
+        </CardContent> */}
     </Card>
   );
 };
