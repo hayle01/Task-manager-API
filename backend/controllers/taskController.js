@@ -3,7 +3,6 @@ import Task from "../models/tasks.js";
 export const createTask = async (req, res, next) => {
     try {
         const {title, description, status, dueDate } = req.body;
-
         const task = {
             title,
             description,
@@ -21,8 +20,7 @@ export const createTask = async (req, res, next) => {
 // get my tasks
 export const getMyTasks = async (req, res, next) => {
     try {
-        // const tasks = await Task.find({createdBy: req.user._id});
-        const tasks = await Task.find({}).sort({createdAt: -1});
+        const tasks = await Task.find({createdBy: req.user._id}).sort({createdAt: -1});
         return res.status(200).json(tasks);
     } catch (error) {
         next(error)
@@ -48,7 +46,7 @@ export const updateTask = async (req, res, next) => {
 
 export const deleteTask = async (req, res, next) => {
     try {
-         const { id } = req.params;
+        const { id } = req.params;
         const task = await Task.findByIdAndDelete({_id: id, createdBy: req.user._id});
         if(!task) return res.status(404).json({message: 'Task not found'});
         return res.status(200).json({message: 'Task deleted successfully'});
