@@ -7,8 +7,9 @@ import helmet from 'helmet';
 import swaggerUi  from 'swagger-ui-express';
 import { swaggerSpec } from './utils/swagger.js';
 import { limiter } from './middlewares/rateLimiter.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-import { logger } from './middlewares/logger.js';
 import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -51,6 +52,19 @@ app.use('/api/home', (req, res, next) => {
         message: "Server is working...😇"
     })
 })
+
+// Server frontend in production
+if(process.env.NODE_ENV === 'production') {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+    // server the frontend
+    app.get('*', (req, res) => {
+        res.send(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
+    })
+    
+}
 // Last route to handle 404 - Not Found
 app.use(notFound);
 
