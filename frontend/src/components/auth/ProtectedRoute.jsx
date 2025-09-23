@@ -12,7 +12,6 @@ export const ProtectedRoute = ({ children }) => {
     queryKey: ["currentUser"],
     queryFn: async () => {
       const response = await api.get("/auth/me");
-      console.log("Response data:", response.data);
       return response.data;
     },
     retry: 1,
@@ -42,8 +41,6 @@ export const ProtectedRoute = ({ children }) => {
   if (isError) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
-  console.log("User", user);
 
    if(!user){
       return <Navigate to='/login' state={{from: location}} replace />

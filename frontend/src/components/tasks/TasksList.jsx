@@ -9,7 +9,6 @@ export const TasksList = ({
   tasks = [],
   isLoading = false,
   onEditTask,
-  onDeleteTask,
   onStatusChange,
 }) => {
   const TaskGrid = ({ tasks, emptyMessage }) => {
@@ -34,7 +33,6 @@ export const TasksList = ({
             key={task._id}
             task={task}
             onEditTask={onEditTask}
-            onDeleteTask={onDeleteTask}
             onStatusChange={onStatusChange}
             isLoading={isLoading}
           />
@@ -43,7 +41,13 @@ export const TasksList = ({
       </div>
     );
   };
+  
   const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearchTerm = task?.title.toLowerCase().includes(searchTerm.toLowerCase()) || task?.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearchTerm;
+  });
 
   const getTaskStats = () => {
     const getTasksByStatus = {
@@ -54,10 +58,10 @@ export const TasksList = ({
     };
 
     const categorizedTasks = {
-      all: tasks,
-      pending: tasks.filter((task) => task.status === "pending"),
-      inProgress: tasks.filter((task) => task.status === "in-progress"),
-      completed: tasks.filter((task) => task.status === "completed")
+      all: filteredTasks,
+      pending: filteredTasks.filter((task) => task.status === "pending"),
+      inProgress: filteredTasks.filter((task) => task.status === "in-progress"),
+      completed: filteredTasks.filter((task) => task.status === "completed")
     };
 
     const Stats = {
@@ -123,7 +127,7 @@ export const TasksList = ({
             type="text"
             placeholder="Search tasks..."
             value={searchTerm}
-            onChange={() => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -164,16 +168,16 @@ export const TasksList = ({
             </Badge>
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="all" >    
+        <TabsContent value="all" className="mt-2">    
             <TaskGrid tasks={categorizedTasks.all} emptyMessage={'No tasks found'} />
         </TabsContent>
-        <TabsContent value="pending" >
+        <TabsContent value="pending" className="mt-2" >
           <TaskGrid tasks={categorizedTasks.pending} emptyMessage={'No Pending tasks found'} />
         </TabsContent>
-        <TabsContent value="in-progress">
+        <TabsContent value="in-progress" className="mt-2">
           <TaskGrid tasks={categorizedTasks.inProgress} emptyMessage={'No In-progress tasks found'} />
         </TabsContent>
-        <TabsContent value="completed">
+        <TabsContent value="completed" className="mt-2">
           <TaskGrid tasks={categorizedTasks.completed} emptyMessage={'No completed tasks found'} />
         </TabsContent>
       </Tabs>

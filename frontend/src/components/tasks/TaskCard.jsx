@@ -6,13 +6,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   Calendar,
   Edit2,
+  Loader2,
   MoreVertical,
   Trash2
 } from "lucide-react";
@@ -27,6 +26,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from '../../lib/api/ApiClient';
 const STATUS_CONFIG = {
   pending: {
     variant: "secondary",
@@ -47,11 +49,10 @@ const STATUS_CONFIG = {
 export const TaskCard = ({
   task,
   onEditTask,
-  onDeleteTask,
   onStatusChange,
   isLoading = false,
 }) => {
-  const [deleteLoading, setDeleteLoading] = useState(false);
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const statusConfig = STATUS_CONFIG[task.status] || STATUS_CONFIG["pending"];
@@ -71,6 +72,34 @@ export const TaskCard = ({
   // dueDate formaT
   const dueDate = formatDate(task.dueDate);
   const overDue = isOverDue(task.dueDate);
+
+  const queryClient = useQueryClient();
+  // TODO: Mutation to delete Task
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (id) => {
+      const response = await api.delete(`/tasks/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Task deleted successfully.");
+      queryClient.invalidateQueries({ queryKey: ['tasks']});
+    },
+    onError: (error) => {
+      toast.error("Failed to delete the task. Please try again.");
+      console.error("Error deleting task:", error);
+    }
+  })
+  const handleConfirmDelete = () => {
+    try {
+      deleteTaskMutation.mutateAsync(task._id)
+      setShowDeleteDialog(false);
+    } catch (error) {
+      toast.error("Failed to delete the task. Please try again.");
+      console.error("Error deleting task:", error);
+    }
+  }
+
+
   return (
     <>
       <Card className="w-full transition-shadow hover:shadow-md">
@@ -96,7 +125,7 @@ export const TaskCard = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={onEditTask}>
+                  <DropdownMenuItem onClick={() => onEditTask(task)}>
                     <Edit2 className="mr-2 h-4 w-4" />
                     Edit
                   </DropdownMenuItem>
@@ -140,7 +169,7 @@ export const TaskCard = ({
                 >
                 {formatDate(task.createdAt)}
               </Badge>  </span>
-            <span className={`${statusConfig.color}`}>{statusConfig.label}</span>
+            <span className={`${statusConfig.color === 'text-primary-foreground' ? 'text-primary' : statusConfig.color}`}>{statusConfig.label}</span>
           </div>
         </CardContent>
       </Card>
@@ -157,7 +186,10 @@ export const TaskCard = ({
 
             <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Delete</AlertDialogAction>
+                <AlertDialogAction onClick={handleConfirmDelete} className="bg-red-600 hover:bg-red-700 focus:ring-red-600" disabled={deleteTaskMutation.isLoading}>
+                  {deleteTaskMutation.isLoading ? (<span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" /> 'Deleting...'</span>) : 'Delete'}
+                </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

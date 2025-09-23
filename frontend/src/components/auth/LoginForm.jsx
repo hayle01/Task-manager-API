@@ -41,7 +41,6 @@ export const LoginForm = () => {
         setAuth(user, token);
         navigate('/dashboard')
       }
-      console.log("Credential data:", data);
     },
     onError: (error) => {
       setError(extractErrorMessages(error));

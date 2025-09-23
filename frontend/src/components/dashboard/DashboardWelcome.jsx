@@ -4,10 +4,9 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-export const DashboardWelcome = ({onCreateTask, showCreateForm}) => {
+export const DashboardWelcome = ({onCreateTask}) => {
   return (
     <Card className="border-0 rounded-none shadow-sm bg-gradient-to-r from-blue-50 to bg-indigo-50">
       <CardHeader className="pb-4">
@@ -22,8 +21,6 @@ export const DashboardWelcome = ({onCreateTask, showCreateForm}) => {
           <Button onClick={onCreateTask}>Create New Task</Button>
         </div>
       </CardHeader>
-      {/* <CardContent className="p-6">
-        </CardContent> */}
     </Card>
   );
 };

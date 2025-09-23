@@ -35,10 +35,6 @@ export const DashboardPage = () => {
     setShowCreateForm(true)
   }
 
-  const handleDeleteTask = (taskId) => {
-    // TODO: Mutation to delete Task
-  } 
-
   const handleStatusChange = (taskId, statusData) => {
     // TODO: MUTATION to update task status
   }
@@ -59,7 +55,6 @@ export const DashboardPage = () => {
     <main className='max-w-7xl mx-auto px-4 py-8 space-y-6'>
     {/* Welcome section */}
     <DashboardWelcome
-      showCreateForm={showCreateForm}
       onCreateTask= {handleonCreateTask}
     />
     {/* Tasks section */}
@@ -67,12 +62,12 @@ export const DashboardPage = () => {
       tasks={tasksQuery.data || []}
       isLoading={tasksQuery.isLoading}
       onEditTask={handleEditTask}
-      onDeleteTask = {handleDeleteTask}
       onStatusChange = {handleStatusChange}
     />
     </main>
     {/*  Tasks dailog Form*/}
     <TaskForm
+    task={editingTask}
      open={showCreateForm || !!editingTask}
      onOpenChange={handleCloseForm}
      />
