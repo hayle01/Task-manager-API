@@ -1,8 +1,8 @@
 import express from 'express';
-import { protect } from '../middlewares/auth.js';
+// import { protect } from '../middlewares/auth.js';
 import { createTask, deleteTask, getMyTasks, updateTask } from '../controllers/taskController.js';
-import { taskValidationSchema } from '../schemas/taskSchema.js';
-import { validateZod } from '../middlewares/validateZod.js';
+// import { taskValidationSchema } from '../schemas/taskSchema.js';
+// import { validateZod } from '../middlewares/validateZod.js';
 
 const router = express.Router();
 
@@ -31,7 +31,8 @@ const router = express.Router();
  *               items:
  *                 type: object
  */
-router.get('/', protect, getMyTasks);
+router.get('/', getMyTasks);
+// router.get('/', protect, getMyTasks);
 
 /**
  * @swagger
@@ -59,7 +60,8 @@ router.get('/', protect, getMyTasks);
  *       201:
  *         description: Task created successfully
  */
-router.post('/', protect, validateZod(taskValidationSchema), createTask);
+router.post('/', createTask);
+// router.post('/', protect, validateZod(taskValidationSchema), createTask);
 
 /**
  * @swagger
@@ -93,7 +95,8 @@ router.post('/', protect, validateZod(taskValidationSchema), createTask);
  *       404:
  *         description: Task not found
  */
-router.put('/:id', protect, updateTask);
+// router.put('/:id', protect, updateTask);
+router.put('/:id', updateTask);
 
 /**
  * @swagger
@@ -116,6 +119,7 @@ router.put('/:id', protect, updateTask);
  *       404:
  *         description: Task not found
  */
-router.delete('/:id', protect, deleteTask);
+//outer.delete('/:id', protect, deleteTask);
+router.delete('/:id', deleteTask);
 
 export default router;
