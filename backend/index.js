@@ -37,17 +37,19 @@ app.use('/api/tasks', tasksRoute)
 
 
 // Server frontend in production
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
+
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
     app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-    // server the frontend
-    app.get("/{*any}", (req, res) => {
-        res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
+    // Serve the frontend app
+
+    app.get("/.*/", (req, res) => {
+        res.send(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
     })
-    
 }
+
 // Last route to handle 404 - Not Found
 app.use(notFound);
 
