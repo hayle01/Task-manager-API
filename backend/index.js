@@ -1,23 +1,20 @@
-import dotenv from 'dotenv';
 import cors from 'cors';
-import morgan from 'morgan';
+import dotenv from 'dotenv';
 import express from 'express';
-import mongoose from 'mongoose';
 import helmet from 'helmet';
-import swaggerUi  from 'swagger-ui-express';
-import { swaggerSpec } from './utils/swagger.js';
-import { limiter } from './middlewares/rateLimiter.js';
+import mongoose from 'mongoose';
+import morgan from 'morgan';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
 import { fileURLToPath } from 'url';
+import { limiter } from './middlewares/rateLimiter.js';
+import { swaggerSpec } from './utils/swagger.js';
 
-import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { notFound } from './middlewares/notFound.js';
 
-import userRoute from './routes/users.js';
 import authRoute from './routes/auth.js';
-import adminRoute from './routes/admin.js';
-import uploadRoute from './routes/upload.js';
-import tasksRoute from './routes/tasks.js'
+import tasksRoute from './routes/tasks.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,18 +37,10 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 
 // Middleware to handle routes
-app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/admin', adminRoute);
-app.use('/api/upload', uploadRoute);
 app.use('/api/tasks', tasksRoute)
 
 
-app.use('/api/home', (req, res, next) => {
-    res.status(200).json({
-        message: "Server is working...😇"
-    })
-})
 
 // Server frontend in production
 if(process.env.NODE_ENV === 'production') {
