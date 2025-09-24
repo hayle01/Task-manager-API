@@ -5,9 +5,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export let swaggerSpec;
+export function getSwaggerSpec() {
+  if (process.env.NODE_ENV !== "development") {
+    return null; 
+  }
 
-if (process.env.NODE_ENV === "development") {
   const options = {
     definition: {
       openapi: "3.0.0",
@@ -17,20 +19,8 @@ if (process.env.NODE_ENV === "development") {
         description: "API documentation for the task manager backend",
       },
       servers: [
-        {
-          url: "http://localhost:3000",
-        },
+        { url: "http://localhost:3000" },
       ],
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "JWT",
-          },
-        },
-      },
-      security: [{ bearerAuth: [] }],
     },
     apis: [
       path.join(__dirname, "../routes/auth.js"),
@@ -38,5 +28,5 @@ if (process.env.NODE_ENV === "development") {
     ],
   };
 
-  swaggerSpec = swaggerJSDoc(options);
+  return swaggerJSDoc(options);
 }
