@@ -39,6 +39,7 @@ const options = {
     path.join(__dirname, "../routes/auth.js"),
     path.join(__dirname, "../routes/tasks.js"),
   ],
+  // apis: ["./routes/*.js"]
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
