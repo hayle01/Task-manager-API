@@ -1,37 +1,40 @@
-import swaggerJSDoc from 'swagger-jsdoc';
-import dotenv from 'dotenv';
+import swaggerJSDoc from "swagger-jsdoc";
+import dotenv from "dotenv";
 
 dotenv.config();
 
 const options = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'Task Manager API',
-      version: '1.0.0',
-      description: 'API documentation for our task manager backend'
+      title: "Task Manager API",
+      version: "1.0.0",
+      description: "API documentation for our task manager backend",
     },
     servers: [
       {
-        url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://task-manager-api-99tg.onrender.com'
-      }
+        url:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000"
+            : "https://task-manager-api-99tg.onrender.com",
+      },
     ],
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
-      }
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
     },
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: ['./routes/*.js'] // Where your route files live
+  apis: ["./routes/*.js"], // Where your route files live
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
