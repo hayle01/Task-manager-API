@@ -27,7 +27,10 @@ if(process.env.NODE_ENV === 'development'){
 }
 app.use(limiter);
 
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+if (process.env.NODE_ENV === 'development') {
+    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
+
 
 
 // Middleware to handle routes
@@ -45,9 +48,10 @@ if (process.env.NODE_ENV === "production") {
 
     // Serve the frontend app
 
-    app.get("/.*/", (req, res) => {
-        res.send(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
-    })
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
+});
+
 }
 
 // Last route to handle 404 - Not Found
