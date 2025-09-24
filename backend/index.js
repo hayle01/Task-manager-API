@@ -74,6 +74,39 @@ mongoose.connect(process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_
         console.error('MongoDB connection error:', err);
     });
 
+    // ✅ Debug: List all registered routes
+// ✅ Debug: List all registered routes with their full paths
+function listRoutes(app) {
+  console.log("🔎 Checking registered routes...");
+
+  function printRoutes(stack, basePath = "") {
+    stack.forEach((middleware) => {
+      if (middleware.route) {
+        // Direct route
+        const path = basePath + middleware.route.path;
+        const methods = Object.keys(middleware.route.methods).join(", ").toUpperCase();
+        console.log(`Route: [${methods}] ${path}`);
+
+        if (path.startsWith("http://") || path.startsWith("https://")) {
+          console.error("❌ Suspicious route detected:", path);
+        }
+      } else if (middleware.name === "router" && middleware.handle.stack) {
+        // Nested router
+        const newBasePath = basePath + (middleware.regexp.source
+          .replace("^\\", "")
+          .replace("\\/?(?=\\/|$)", "")
+          .replace(/\\\//g, "/")
+          .replace(/\$$/, "") || "");
+        printRoutes(middleware.handle.stack, newBasePath);
+      }
+    });
+  }
+
+  printRoutes(app._router.stack);
+}
+
+listRoutes(app);
+
     
 app.listen(PORT, () => {
     console.log(`The server is running on http://localhost:${PORT}`);
