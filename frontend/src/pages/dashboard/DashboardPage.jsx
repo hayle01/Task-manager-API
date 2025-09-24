@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader'
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome'
-import { TaskForm } from '@/components/tasks/taskForm'
+import { TaskForm } from '@/components/tasks/TaskForm'
 import { TasksList } from '@/components/tasks/TasksList'
 import { useQuery } from '@tanstack/react-query'
 import api from '../../lib/api/ApiClient'

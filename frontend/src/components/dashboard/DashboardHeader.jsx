@@ -1,4 +1,3 @@
-import { ClipboardCheck, LogOut } from 'lucide-react';
 import useAuthStore from '../../lib/Store/authStore';
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router';
