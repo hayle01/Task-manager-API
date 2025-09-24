@@ -7,7 +7,8 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { limiter } from './middlewares/rateLimiter.js';
-
+import { swaggerSpec } from './utils/swagger.js'
+import swaggerUi from 'swagger-ui-express';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFound } from './middlewares/notFound.js';
 
@@ -26,7 +27,7 @@ if(process.env.NODE_ENV === 'development'){
 }
 app.use(limiter);
 
-//app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 
 // Middleware to handle routes
