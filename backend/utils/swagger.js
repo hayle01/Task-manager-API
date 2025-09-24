@@ -1,7 +1,12 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const options = {
   definition: {
@@ -28,13 +33,12 @@ const options = {
         },
       },
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    security: [{ bearerAuth: [] }],
   },
-  apis: ["./routes/*.js"], // Where your route files live
+  apis: [
+    path.join(__dirname, "../routes/auth.js"),
+    path.join(__dirname, "../routes/tasks.js"),
+  ],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
